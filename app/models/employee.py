@@ -36,7 +36,7 @@ class Employee(db.Model):
     documents = db.Column(db.JSON)  # Store document paths and types
     
     # Timestamps
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
@@ -68,6 +68,7 @@ class Employee(db.Model):
     def get_current_month_attendance(self):
         """Get attendance records for current month"""
         from datetime import datetime
+        from app.models.attendance import Attendance
         current_month = datetime.now().month
         current_year = datetime.now().year
         return self.attendances.filter(

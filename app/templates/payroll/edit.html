@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Chỉnh sửa bảng lương</h2>
+  <form method="post">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="basic_salary" class="form-label">Lương cơ bản</label>
+          <input type="number" class="form-control" id="basic_salary" name="basic_salary" value="{{ payroll.basic_salary }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="housing_allowance" class="form-label">Phụ cấp nhà ở</label>
+          <input type="number" class="form-control" id="housing_allowance" name="housing_allowance" value="{{ payroll.housing_allowance }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="transport_allowance" class="form-label">Phụ cấp đi lại</label>
+          <input type="number" class="form-control" id="transport_allowance" name="transport_allowance" value="{{ payroll.transport_allowance }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="meal_allowance" class="form-label">Phụ cấp ăn trưa</label>
+          <input type="number" class="form-control" id="meal_allowance" name="meal_allowance" value="{{ payroll.meal_allowance }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="other_allowances" class="form-label">Phụ cấp khác</label>
+          <input type="number" class="form-control" id="other_allowances" name="other_allowances" value="{{ payroll.other_allowances }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="overtime_hours" class="form-label">Số giờ làm thêm</label>
+          <input type="number" class="form-control" id="overtime_hours" name="overtime_hours" value="{{ payroll.overtime_hours }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="overtime_rate" class="form-label">Hệ số làm thêm</label>
+          <input type="number" class="form-control" id="overtime_rate" name="overtime_rate" value="{{ payroll.overtime_rate }}" step="0.01">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="performance_bonus" class="form-label">Thưởng hiệu suất</label>
+          <input type="number" class="form-control" id="performance_bonus" name="performance_bonus" value="{{ payroll.performance_bonus }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="holiday_bonus" class="form-label">Thưởng lễ/tết</label>
+          <input type="number" class="form-control" id="holiday_bonus" name="holiday_bonus" value="{{ payroll.holiday_bonus }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="other_bonuses" class="form-label">Thưởng khác</label>
+          <input type="number" class="form-control" id="other_bonuses" name="other_bonuses" value="{{ payroll.other_bonuses }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="tax_deduction" class="form-label">Khấu trừ thuế</label>
+          <input type="number" class="form-control" id="tax_deduction" name="tax_deduction" value="{{ payroll.tax_deduction }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="insurance_deduction" class="form-label">Khấu trừ bảo hiểm</label>
+          <input type="number" class="form-control" id="insurance_deduction" name="insurance_deduction" value="{{ payroll.insurance_deduction }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="loan_deduction" class="form-label">Khấu trừ vay</label>
+          <input type="number" class="form-control" id="loan_deduction" name="loan_deduction" value="{{ payroll.loan_deduction }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="other_deductions" class="form-label">Khấu trừ khác</label>
+          <input type="number" class="form-control" id="other_deductions" name="other_deductions" value="{{ payroll.other_deductions }}" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="notes" class="form-label">Ghi chú</label>
+          <textarea class="form-control" id="notes" name="notes">{{ payroll.notes }}</textarea>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a href="{{ url_for('payroll.view', id=payroll.id) }}" class="btn btn-secondary">Hủy</a>
+  </form>
+</div>
+{% endblock %}

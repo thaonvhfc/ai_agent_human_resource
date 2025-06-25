@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Tất cả bảng lương</h2>
+  <form method="get" class="row g-3 mb-3">
+    <div class="col-md-2">
+      <label for="employee_id" class="form-label">Nhân viên</label>
+      <select name="employee_id" id="employee_id" class="form-select">
+        <option value="">Tất cả</option>
+        {% for emp in employees %}
+        <option value="{{ emp.id }}" {% if emp.id == selected_employee %}selected{% endif %}>{{ emp.full_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="month" class="form-label">Tháng</label>
+      <input type="number" name="month" id="month" class="form-control" min="1" max="12" value="{{ selected_month or '' }}">
+    </div>
+    <div class="col-md-2">
+      <label for="year" class="form-label">Năm</label>
+      <input type="number" name="year" id="year" class="form-control" min="2000" max="2100" value="{{ selected_year }}">
+    </div>
+    <div class="col-md-2">
+      <label for="status" class="form-label">Trạng thái</label>
+      <select name="status" id="status" class="form-select">
+        <option value="">Tất cả</option>
+        <option value="draft" {% if selected_status=='draft' %}selected{% endif %}>Nháp</option>
+        <option value="approved" {% if selected_status=='approved' %}selected{% endif %}>Đã duyệt</option>
+        <option value="paid" {% if selected_status=='paid' %}selected{% endif %}>Đã thanh toán</option>
+      </select>
+    </div>
+    <div class="col-md-2 align-self-end">
+      <button type="submit" class="btn btn-primary">Lọc</button>
+    </div>
+  </form>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Nhân viên</th>
+        <th>Kỳ lương</th>
+        <th>Lương gộp</th>
+        <th>Khấu trừ</th>
+        <th>Lương thực nhận</th>
+        <th>Làm thêm</th>
+        <th>Trạng thái</th>
+        <th>Xem</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for payroll in payrolls.items %}
+      <tr>
+        <td>{{ payroll.employee.full_name }}</td>
+        <td>{{ payroll.pay_period_start.strftime('%d/%m/%Y') }} - {{ payroll.pay_period_end.strftime('%d/%m/%Y') }}</td>
+        <td>{{ payroll.gross_pay|default(0) | round(0) }}</td>
+        <td>{{ payroll.total_deductions|default(0) | round(0) }}</td>
+        <td>{{ payroll.net_pay|default(0) | round(0) }}</td>
+        <td>{{ payroll.overtime_pay|default(0) | round(0) }}</td>
+        <td>{{ payroll.status }}</td>
+        <td><a href="{{ url_for('payroll.view', id=payroll.id) }}" class="btn btn-sm btn-info">Chi tiết</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if payrolls.pages > 1 %}
+  <nav>
+    <ul class="pagination">
+      {% if payrolls.has_prev %}
+      <li class="page-item"><a class="page-link" href="?page={{ payrolls.prev_num }}">Trước</a></li>
+      {% endif %}
+      {% for p in range(1, payrolls.pages+1) %}
+      <li class="page-item {% if p == payrolls.page %}active{% endif %}"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+      {% endfor %}
+      {% if payrolls.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ payrolls.next_num }}">Sau</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

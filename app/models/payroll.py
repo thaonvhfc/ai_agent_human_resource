@@ -20,9 +20,8 @@ class Payroll(db.Model):
     transport_allowance = db.Column(db.Numeric(10, 2), default=0)
     meal_allowance = db.Column(db.Numeric(10, 2), default=0)
     other_allowances = db.Column(db.Numeric(10, 2), default=0)
-    
-    # Overtime
-    overtime_hours = db.Column(db.Float, default=0)
+      # Overtime
+    overtime_hours = db.Column(db.Numeric(10, 2), default=0)
     overtime_rate = db.Column(db.Numeric(10, 2), default=0)
     overtime_pay = db.Column(db.Numeric(10, 2), default=0)
     
@@ -60,6 +59,7 @@ class Payroll(db.Model):
     def calculate_totals(self):
         """Calculate gross pay, total deductions, and net pay"""
         # Calculate gross pay
+        print("1-----chưa có lỗi")
         self.gross_pay = (
             self.basic_salary +
             self.housing_allowance +
@@ -71,7 +71,7 @@ class Payroll(db.Model):
             self.holiday_bonus +
             self.other_bonuses
         )
-        
+        print("1-----ĐÃ có lỗi")
         # Calculate total deductions
         self.total_deductions = (
             self.tax_deduction +
@@ -85,8 +85,11 @@ class Payroll(db.Model):
     
     def calculate_overtime_pay(self):
         """Calculate overtime pay based on hours and rate"""
+        from decimal import Decimal
+        print("-----chưa có lỗi")
         if self.overtime_hours and self.overtime_rate:
-            self.overtime_pay = self.overtime_hours * self.overtime_rate
+            # Ensure both operands are Decimal for multiplication            
+            self.overtime_pay = Decimal(str(self.overtime_hours)) * self.overtime_rate
     
     @staticmethod
     def generate_payroll_for_employee(employee, pay_period_start, pay_period_end):
@@ -99,22 +102,28 @@ class Payroll(db.Model):
             Attendance.date >= pay_period_start,
             Attendance.date <= pay_period_end
         ).all()
-        
-        # Calculate total overtime hours
-        total_overtime = sum(att.overtime_hours or 0 for att in attendances)
+          # Calculate total overtime hours
+        from decimal import Decimal
+        total_overtime = Decimal('0')
+        for att in attendances:
+            if att.overtime_hours:
+                total_overtime += Decimal(str(att.overtime_hours))
         
         # Create payroll record
+        salary = employee.salary or Decimal('0')
+        if not isinstance(salary, Decimal):
+            salary = Decimal(str(salary))
+        overtime_rate = salary / Decimal('160') * Decimal('1.5') if salary else Decimal('0')
         payroll = Payroll(
             employee_id=employee.id,
             pay_period_start=pay_period_start,
             pay_period_end=pay_period_end,
             pay_date=pay_period_end,  # Default to end of period
-            basic_salary=employee.salary or 0,
+            basic_salary=salary,
             overtime_hours=total_overtime,
-            overtime_rate=employee.salary / 160 * 1.5 if employee.salary else 0  # 1.5x hourly rate
-        )
-        
-        payroll.calculate_overtime_pay()
+            overtime_rate=overtime_rate
+        )        
+        payroll.calculate_overtime_pay()        
         payroll.calculate_totals()
         
         return payroll

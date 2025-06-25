@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Báo cáo lương theo phòng ban</h2>
+  <form method="get" class="row g-3 mb-3">
+    <div class="col-md-2">
+      <label for="year" class="form-label">Năm</label>
+      <input type="number" name="year" id="year" class="form-control" min="2000" max="2100" value="{{ selected_year }}">
+    </div>
+    <div class="col-md-2">
+      <label for="month" class="form-label">Tháng</label>
+      <input type="number" name="month" id="month" class="form-control" min="1" max="12" value="{{ selected_month or '' }}">
+    </div>
+    <div class="col-md-2 align-self-end">
+      <button type="submit" class="btn btn-primary">Xem báo cáo</button>
+    </div>
+  </form>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Phòng ban</th>
+        <th>Số nhân viên</th>
+        <th>Lương gộp</th>
+        <th>Lương thực nhận</th>
+        <th>Khấu trừ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in department_summary %}
+      <tr>
+        <td>{{ row.department }}</td>
+        <td>{{ row.employee_count }}</td>
+        <td>{{ row.total_gross|default(0) | round(0) }}</td>
+        <td>{{ row.total_net|default(0) | round(0) }}</td>
+        <td>{{ row.total_deductions|default(0) | round(0) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="mt-3">
+    <h5>Tổng kết:</h5>
+    <ul>
+      <li>Tổng bảng lương: {{ totals.total_payrolls }}</li>
+      <li>Tổng lương gộp: {{ totals.total_gross|default(0) | round(0) }}</li>
+      <li>Tổng lương thực nhận: {{ totals.total_net|default(0) | round(0) }}</li>
+      <li>Tổng khấu trừ: {{ totals.total_deductions|default(0) | round(0) }}</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

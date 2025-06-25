@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Tạo bảng lương</h2>
+  <form method="post">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="month" class="form-label">Tháng</label>
+        <input type="number" name="month" id="month" class="form-control" min="1" max="12" required>
+      </div>
+      <div class="col-md-4">
+        <label for="year" class="form-label">Năm</label>
+        <input type="number" name="year" id="year" class="form-control" min="2000" max="2100" required>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Chọn nhân viên</label>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="select_all" onclick="for(let cb of document.querySelectorAll('.emp-cb')) cb.checked=this.checked;">
+        <label class="form-check-label" for="select_all">Chọn tất cả</label>
+      </div>
+      <div class="row">
+        {% for emp in employees %}
+        <div class="col-md-3">
+          <div class="form-check">
+            <input class="form-check-input emp-cb" type="checkbox" name="employee_ids" value="{{ emp.id }}" id="emp{{ emp.id }}">
+            <label class="form-check-label" for="emp{{ emp.id }}">{{ emp.full_name }}</label>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Tạo bảng lương</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Thêm Nhân viên mới</h2>
+  <form method="POST">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="username" class="form-label">Tên đăng nhập</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Mật khẩu</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Vai trò</label>
+          <select class="form-select" id="role" name="role" required>
+            <option value="employee">Nhân viên</option>
+            <option value="leader">Trưởng nhóm</option>
+            <option value="hr">Nhân sự</option>
+            <option value="admin">Quản trị viên</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="employee_id" class="form-label">Mã nhân viên</label>
+          <input type="text" class="form-control" id="employee_id" name="employee_id">
+        </div>
+        <div class="mb-3">
+          <label for="first_name" class="form-label">Họ</label>
+          <input type="text" class="form-control" id="first_name" name="first_name">
+        </div>
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Tên</label>
+          <input type="text" class="form-control" id="last_name" name="last_name">
+        </div>
+        <div class="mb-3">
+          <label for="date_of_birth" class="form-label">Ngày sinh</label>
+          <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
+        </div>
+        <div class="mb-3">
+          <label for="gender" class="form-label">Giới tính</label>
+          <select class="form-select" id="gender" name="gender">
+            <option value="male">Nam</option>
+            <option value="female">Nữ</option>
+            <option value="other">Khác</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="phone" class="form-label">Số điện thoại</label>
+          <input type="text" class="form-control" id="phone" name="phone">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Địa chỉ</label>
+          <input type="text" class="form-control" id="address" name="address">
+        </div>
+        <div class="mb-3">
+          <label for="emergency_contact" class="form-label">Người liên hệ khẩn cấp</label>
+          <input type="text" class="form-control" id="emergency_contact" name="emergency_contact">
+        </div>
+        <div class="mb-3">
+          <label for="emergency_phone" class="form-label">SĐT khẩn cấp</label>
+          <input type="text" class="form-control" id="emergency_phone" name="emergency_phone">
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">Phòng ban</label>
+          <input type="text" class="form-control" id="department" name="department">
+        </div>
+        <div class="mb-3">
+          <label for="position" class="form-label">Chức vụ</label>
+          <input type="text" class="form-control" id="position" name="position">
+        </div>
+        <div class="mb-3">
+          <label for="hire_date" class="form-label">Ngày vào làm</label>
+          <input type="date" class="form-control" id="hire_date" name="hire_date">
+        </div>
+        <div class="mb-3">
+          <label for="employment_type" class="form-label">Loại hợp đồng</label>
+          <select class="form-select" id="employment_type" name="employment_type">
+            <option value="full_time">Toàn thời gian</option>
+            <option value="part_time">Bán thời gian</option>
+            <option value="contract">Hợp đồng</option>
+            <option value="intern">Thực tập</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="salary" class="form-label">Lương cơ bản</label>
+          <input type="number" class="form-control" id="salary" name="salary" step="0.01">
+        </div>
+        <div class="mb-3">
+          <label for="manager_id" class="form-label">Quản lý trực tiếp</label>
+          <select class="form-select" id="manager_id" name="manager_id">
+            <option value="">-- Không chọn --</option>
+            {% for manager in managers %}
+              <option value="{{ manager.id }}">{{ manager.full_name }} ({{ manager.position }})</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm nhân viên</button>
+  </form>
+</div>
+{% endblock %}

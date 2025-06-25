@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Chi tiết Bảng lương</h2>
+  {% if payroll %}
+  <table class="table table-bordered">
+    <tr><th>Nhân viên</th><td>{{ payroll.employee.full_name }}</td></tr>
+    <tr><th>Kỳ lương</th><td>{{ payroll.pay_period_start.strftime('%d/%m/%Y') }} - {{ payroll.pay_period_end.strftime('%d/%m/%Y') }}</td></tr>
+    <tr><th>Lương cơ bản</th><td>{{ payroll.basic_salary|default(0) | round(0) }}</td></tr>
+    <tr><th>Phụ cấp nhà ở</th><td>{{ payroll.housing_allowance|default(0) | round(0) }}</td></tr>
+    <tr><th>Phụ cấp đi lại</th><td>{{ payroll.transport_allowance|default(0) | round(0) }}</td></tr>
+    <tr><th>Phụ cấp ăn trưa</th><td>{{ payroll.meal_allowance|default(0) | round(0) }}</td></tr>
+    <tr><th>Phụ cấp khác</th><td>{{ payroll.other_allowances|default(0) | round(0) }}</td></tr>
+    <tr><th>Làm thêm (giờ)</th><td>{{ payroll.overtime_hours|default(0) }}</td></tr>
+    <tr><th>Lương làm thêm</th><td>{{ payroll.overtime_pay|default(0) | round(0) }}</td></tr>
+    <tr><th>Thưởng hiệu suất</th><td>{{ payroll.performance_bonus|default(0) | round(0) }}</td></tr>
+    <tr><th>Thưởng lễ/tết</th><td>{{ payroll.holiday_bonus|default(0) | round(0) }}</td></tr>
+    <tr><th>Thưởng khác</th><td>{{ payroll.other_bonuses|default(0) | round(0) }}</td></tr>
+    <tr><th>Khấu trừ thuế</th><td>{{ payroll.tax_deduction|default(0) | round(0) }}</td></tr>
+    <tr><th>Khấu trừ bảo hiểm</th><td>{{ payroll.insurance_deduction|default(0) | round(0) }}</td></tr>
+    <tr><th>Khấu trừ vay</th><td>{{ payroll.loan_deduction|default(0) | round(0) }}</td></tr>
+    <tr><th>Khấu trừ khác</th><td>{{ payroll.other_deductions|default(0) | round(0) }}</td></tr>
+    <tr><th>Tổng khấu trừ</th><td>{{ payroll.total_deductions|default(0) | round(0) }}</td></tr>
+    <tr><th>Lương gộp</th><td>{{ payroll.gross_pay|default(0) | round(0) }}</td></tr>
+    <tr><th>Lương thực nhận</th><td>{{ payroll.net_pay|default(0) | round(0) }}</td></tr>
+    <tr><th>Trạng thái</th><td>{{ payroll.status }}</td></tr>
+    <tr><th>Ghi chú</th><td>{{ payroll.notes }}</td></tr>
+  </table>
+  {% else %}
+  <p>Không tìm thấy bảng lương.</p>
+  {% endif %}
+  <a href="{{ url_for('payroll.all_payrolls') }}" class="btn btn-secondary">Quay lại</a>
+</div>
+{% endblock %}

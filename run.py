@@ -43,4 +43,4 @@ def create_admin():
     print('Admin user created: admin/admin123')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=12000, debug=True)
+    app.run(host='0.0.0.0', port=12002, debug=True)
